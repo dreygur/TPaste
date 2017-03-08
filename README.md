@@ -26,6 +26,8 @@ It allows you to do everything the API allows, which is:
 
 Installation
 ------------
+You should have the Pastebin module Developed by Ian Havelock
+Download from: https://github.com/rytotul/Pastebin
 
 If you have downloaded the source distribution, to install do the following at the commandline: 
 
