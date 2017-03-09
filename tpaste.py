@@ -34,8 +34,8 @@ parser.add_option("--pf", action="store_true", dest="p_f", help="Shows all valid
 
 # App api and login informations
 dev_key = '10077d8a87d91e8542b35339b5d883e8'	# Don't Change this !important
-username = 'mdazharulcu'							# Your username
-password = '01792261115'							# Your Password
+username = ''							# Your username
+password = ''							# Your Password
 
 # Generating User-Key
 user_key = api.generate_user_key(dev_key, username, password)
