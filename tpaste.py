@@ -17,20 +17,22 @@ from lib.pastebin import PastebinAPI
 parser = OptionParser()
 api = PastebinAPI()
 
+#xml = XmlDictConfig()
+
 # Parser options...
-parser.add_option("-t", "--title", action="store", dest="p_name", default="Title of paste", help="Your Paste-name e.g, 'Hello Totul!'")
-parser.add_option("-c", "--code", action="store", dest="p_code", default="Hello World!", help="Your source-code file name with extension...")
-parser.add_option("-f", "--format", action="store", dest="p_format", default="python", help="defines data format e.g, python")
-parser.add_option("-p", "--privacy", action="store", dest="p_private", default="unlisted", help="Valid options are public, unlisted, private")
-parser.add_option("-e", "--expiry", action="store", dest="p_expire_date", default="1H", help="Valid options are N, 10M, 1H, 1D, 1M ('None', '10 Minutes', '1 Hour', '1 Day', '1 Month'")
-parser.add_option("--ud", "--details", action="store_true", dest="u_details", help="User's Paste Details or your profile!")
-parser.add_option("--trending", action="store_true", dest="p_trending", help="All Trending Pastes!")
-parser.add_option("--pastes", action="store_true", dest="my_paste", help="All Pastes by the user!")
-parser.add_option("-d", "--delete", action="store", dest="d_paste", default="None", help="Delete a paste...")
-parser.add_option("--pf", action="store_true", dest="p_f", help="Shows all valid 'Paste' formats")
+parser.add_option("-t", "--title", help="Your Paste-name e.g, 'Hello Totul!'", default="Title of paste", action="store")
+parser.add_option("-c", "--code", help="Your source-code file name with extension...", default="Hello World!", action="store")
+parser.add_option("-f", "--format", help="defines data format e.g, python", default="python", action="store")
+parser.add_option("-p", "--privacy", help="Valid options are public, unlisted, private", default="unlisted", action="store")
+parser.add_option("-e", "--expiry", help="Valid options are N, 10M, 1H, 1D, 1M ('None', '10 Minutes', '1 Hour', '1 Day', '1 Month'", default="1H", action="store")
+parser.add_option("-u", "--udetails", help="User's Paste Details or your profile!", action="store_true")
+parser.add_option("--trending", help="All Trending Pastes!", action="store_true")
+parser.add_option("--pastes", help="All Pastes by the user!", action="store_true")
+parser.add_option("-d", "--delete", help="Delete a paste...", default="None", action="store")
+parser.add_option("--pf", help="Shows all valid 'Paste' formats", action="store_true")
 
 # Gathering all parser-options in a variable
-(options, args) = parser.parse_args()
+(args, _) = parser.parse_args()
 
 # App api and login informations
 dev_key = '10077d8a87d91e8542b35339b5d883e8'	# Don't Change this !important
@@ -38,51 +40,78 @@ username = ''							# Your username
 password = ''							# Your Password
 
 # Generating User-Key
-user_key = api.generate_user_key(dev_key, username, password)
+if username and password is not None:
+	user_key = api.generate_user_key(dev_key, username, password)
+else:
+	user_key = None
 
 # Pastes by the user
-if options.my_paste == True:
-	u_pastes = api.pastes_by_user(dev_key, user_key, results_limit=None)
-	print u_pastes
+def user_pastes(up_d, up_u):
+	if up_u is not None:
+		u_pastes = api.pastes_by_user(up_d, up_u, None)
+		print u_pastes
+	else:
+		print '\nYou are not logged in.\nPlease log-in and try again...'
 
 # Deleting Pastes
-try:
-	paste_key = options.d_paste
-	paste_to_delete = api.delete_paste(dev_key, user_key, paste_key)
-	print paste_to_delete
-except:
-	pass
+def del_paste(dp_d, dp_u, dp_p):
+	if dp_u is not None:
+		try:
+			paste_key = args.delete
+			paste_to_delete = api.delete_paste(dp_d, dp_u, dp_p)
+			print paste_to_delete
+		except:
+			pass
+	else:
+		print '\nYou are not logged in.\nPlease log-in and try again...'
 
 # Trending Posts
-if options.p_trending == True:
+if args.trending is True:
 	paste_trending = api.trending(dev_key)
 	print paste_trending
 
 # User Details... If you want to see the details then simply print it
-if options.u_details == True:
-	details = api.user_details(dev_key, user_key)
-	print details
+def user_details(ud_d, ud_u):
+	u_details = api.user_details(ud_d, ud_u)
+	print '\n'+u_details
+
 
 # Printing all valid paste formats
-if options.p_f == True:
+if args.pf is True:
 	paste_f = list(api.paste_format)
-	print paste_f
+	print '\n'+paste_f
 
-# file-open parameters for pasting your desired file
-try:
-        file = open(options.p_code, "r")
-        code = file.read()
-        file.close()
-        # Sending Data to pastebin.com
-        url = api.paste(api_dev_key = dev_key,
-				api_paste_code = code,
-				paste_name = options.p_name,
-				api_user_key = user_key, 
-        		paste_format = options.p_format,
-				paste_private = 'unlisted',
-				paste_expire_date = options.p_expire_date)
-        print url # Printing the pastebin.com url
-except:
-        pass
+#The main function
+def main():
+	if args.pastes is True:
+		user_pastes(dev_key, user_key)
 
+	if args.udetails is True:
+		user_details(dev_key, user_key)
+
+	if args.delete is True:
+		del_paste(dev_key, user_key, paste_key)
+	
+	if args.title is not None:
+		# file-open parameters for pasting your desired file
+		try:
+		    file = open(args.code, "r")
+		    code = file.read()
+		    file.close()
+		    # Sending Data to pastebin.com
+		    url = api.paste(
+			        api_dev_key = dev_key,
+					api_paste_code = code,
+					paste_name = args.title,
+					api_user_key = user_key, 
+			        paste_format = args.format,
+					paste_private = args.privacy,
+					paste_expire_date = args.expiry)
+		    print '\nYour paste link: '+url+'Thanks for using tPaste...' #Prints the paste url
+		except:
+			pass
+
+
+if __name__ == "__main__":
+	main()
 # end..............................................
