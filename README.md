@@ -20,20 +20,13 @@ It allows you to do everything the API allows, which is:
 
 ## Installation
 
-You should have the Pastebin module Developed by Ian Havelock
-Install the Pastebin:
+Just clone the git and use as you wish:
+``` bash
+$ git clone https://github.com/rytotul/TPaste.git
 ```
-$ easy_install Pastebin
-```
-Or Download and install from [Here](http://pypi.python.org/pypi/Pastebin/)
 
-If you have downloaded the source distribution, to install do the following at the commandline: 
-```
-$ python setup.py install
-```
-Or you can run directly by typing:
-```
-$ python pastebin.py
-```
 Thats it.
 You can help me to improve it by submitting an issue or commiting the changes. 
+
+## Acknowledgements
+- [Ian Havelock](https://github.com/Morrolan) _(For Pastebin API)_
