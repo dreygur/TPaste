@@ -4,4 +4,4 @@ python:
   - 3.6
 
 script:
-  - tpaste.py
+  - python3 tpaste.py
