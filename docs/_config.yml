@@ -1,5 +1,5 @@
 title: TPaste
-description: The package allows you to communicate directly with Pastebin.com from your Python application, either logged in or anonymously.
+description: The package allows you to communicate directly with Pastebin from your Python application, either logged in or anonymously.
 theme: jekyll-theme-cayman
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 show_downloads: true
