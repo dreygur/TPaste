@@ -1,4 +1,4 @@
-# Pastebin App [![Build Status](https://travis-ci.org/rytotul/TPaste.svg?branch=master)](https://travis-ci.org/rytotul/TPaste)
+# Pastebin App [![Build Status](https://travis-ci.org/dreygur/TPaste.svg?branch=master)](https://travis-ci.org/dreygur/TPaste)
 
 ## About
 The package allows you to communicate directly with Pastebin.com from your Python application, either logged in or anonymously. This can be handy 
